@@ -6,3 +6,11 @@
 # hot to do this?
 
 -
+
+# cookie rules
+
+# same site
+
+- `lax`
+- same site video
+  https://www.youtube.com/watch?v=aUF2QCEudPo
