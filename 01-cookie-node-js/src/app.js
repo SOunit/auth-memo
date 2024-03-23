@@ -31,7 +31,6 @@ app.get("/login", function (req, res) {
 
 app.post("/login", function (req, res) {
   const { email, password } = req.body;
-  console.log(email, password);
 
   // Actual implementation would check values in a database
   if (email === "t@t.com" && password === "password") {
@@ -50,7 +49,6 @@ app.get("/logout", (req, res) => {
 app.use(checkLogin);
 
 app.get("/", function (req, res) {
-  console.log({ __dirname });
   res.render(path.join(__dirname, "views", "pages", "index"));
 });
 
