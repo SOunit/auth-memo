@@ -1,8 +1,25 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
+
+app.use(express.urlencoded({ extended: true }));
 
 // set view engine
 app.set("view engine", "ejs");
+
+// how express-session work
+// 1. initialize: check req and see if req has uniqueSessionID cookie
+// 2. if uniqueSessionID exist, populate req.session object
+// 3. if not exist, initialize req.session
+// 4. if session changes, set cookie to res.cookie
+//
+app.use(
+  session({
+    secret: "process.env.SESSION_SECRET_KEY!",
+    name: "uniqueSessionID", // name in cookie
+    saveUninitialized: false,
+  })
+);
 
 // route
 app.get("/login", function (req, res) {
