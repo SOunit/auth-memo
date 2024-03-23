@@ -15,7 +15,8 @@ app.set("view engine", "ejs");
 app.use(cookie());
 
 app.use((req, res, next) => {
-  console.log(req.cookies.message);
+  var messageInCookie = req.cookies.message;
+  console.log({ messageInCookie });
 
   res.cookie("message in cookie", "hello world!");
 
@@ -47,6 +48,9 @@ app.post("/login", function (req, res) {
   // Actual implementation would check values in a database
   if (email === "t@t.com" && password === "password") {
     req.session.loggedIn = true;
+
+    // set cookie
+    res.cookie("home-login-success", "true");
   }
 
   res.redirect("/");
