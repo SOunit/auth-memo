@@ -1,5 +1,8 @@
 const express = require("express");
 const session = require("express-session");
+const path = require("path");
+const { checkLogin } = require("./middleware/check-login");
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +26,7 @@ app.use(
 
 // route
 app.get("/login", function (req, res) {
-  res.render("pages/login");
+  res.render(path.join(__dirname, "views", "pages", "login"));
 });
 
 app.post("/login", function (req, res) {
@@ -43,8 +46,12 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+// protect auth route
+app.use(checkLogin);
+
 app.get("/", function (req, res) {
-  res.render("pages/index");
+  console.log({ __dirname });
+  res.render(path.join(__dirname, "views", "pages", "index"));
 });
 
 const port = "8000";
