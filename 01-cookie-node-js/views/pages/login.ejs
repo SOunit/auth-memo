@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header'); %></header>
+    <h1>login</h1>
+    <form action="/login" method="post">
+      <input type="email" placeholder="Type your Email" name="email" />
+      <input type="password" placeholder="Type your Password" name="password" />
+      <input type="submit" value="Login" class="btn btn-success" />
+    </form>
+  </body>
+</html>
