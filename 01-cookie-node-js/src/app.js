@@ -1,4 +1,5 @@
 const express = require("express");
+const cookie = require("cookie-parser");
 const session = require("express-session");
 const path = require("path");
 const { checkLogin } = require("./middleware/check-login");
@@ -9,6 +10,17 @@ app.use(express.urlencoded({ extended: true }));
 
 // set view engine
 app.set("view engine", "ejs");
+
+// setup cookie
+app.use(cookie());
+
+app.use((req, res, next) => {
+  console.log(req.cookies.message);
+
+  res.cookie("message in cookie", "hello world!");
+
+  next();
+});
 
 // how express-session work
 // 1. initialize: check req and see if req has uniqueSessionID cookie
