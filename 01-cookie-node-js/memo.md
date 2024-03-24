@@ -1,3 +1,9 @@
+# requirement
+
+- login to home
+- switch to rove with no pin code validation
+- switch to home need pin code validation
+
 # page ejs setup
 
 https://enlyt.co.jp/blog/node-js-2/

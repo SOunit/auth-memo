@@ -7,8 +7,18 @@
     <header><%- include('../partials/header'); %></header>
     <h1>login</h1>
     <form action="/login" method="post">
-      <input type="email" placeholder="Type your Email" name="email" />
-      <input type="password" placeholder="Type your Password" name="password" />
+      <input
+        type="email"
+        placeholder="Type your Email"
+        name="email"
+        value="t@t.com"
+      />
+      <input
+        type="password"
+        placeholder="Type your Password"
+        name="password"
+        value="password"
+      />
       <input type="submit" value="Login" class="btn btn-success" />
     </form>
   </body>

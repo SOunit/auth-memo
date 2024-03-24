@@ -75,9 +75,6 @@ app.get("/rove", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "rove"));
 });
 
-// protect home mode
-app.use(checkHomeLogin);
-
 app.get("/switch-to-home", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "switch-to-home"));
 });
@@ -88,11 +85,14 @@ app.post("/switch-to-home", function (req, res) {
   // Actual implementation would check values in a database
   if (pinCode === "1234") {
     // set cookie
-    res.cookie("switch-to-home-success", "false");
+    res.cookie("home-login-success", "true");
   }
 
   res.redirect("/");
 });
+
+// protect home mode
+app.use(checkHomeLogin);
 
 app.get("/", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "index"));

@@ -4,7 +4,11 @@
     <%- include('../partials/head'); %>
   </head>
   <body class="container">
-    <header><%- include('../partials/header'); %></header>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/rove">Home</a>
+      </nav>
+    </header>
     <h1>Switch to Home Mode</h1>
     <form action="/switch-to-home" method="post">
       <input type="text" placeholder="Type your PIN code" name="pinCode" />
