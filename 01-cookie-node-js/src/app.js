@@ -15,8 +15,9 @@ app.set("view engine", "ejs");
 app.use(cookie());
 
 app.use((req, res, next) => {
-  var messageInCookie = req.cookies.message;
-  console.log({ messageInCookie });
+  const cookies = req.cookies;
+  var messageInCookie = req.cookies["message in cookie"];
+  console.log({ messageInCookie, cookies });
 
   res.cookie("message in cookie", "hello world!");
 
@@ -64,20 +65,20 @@ app.get("/logout", (req, res) => {
 // protect auth route
 app.use(checkLogin);
 
-app.get("/rove-login", function (req, res) {
-  res.render(path.join(__dirname, "views", "pages", "rove-login"));
+app.get("/switch-to-home", function (req, res) {
+  res.render(path.join(__dirname, "views", "pages", "switch-to-home"));
 });
 
-app.post("/rove-login", function (req, res) {
+app.post("/switch-to-home", function (req, res) {
   const { pinCode } = req.body;
 
   // Actual implementation would check values in a database
   if (pinCode === "1234") {
     // set cookie
-    res.cookie("home-login-success", "false");
+    res.cookie("switch-to-home-success", "false");
   }
 
-  res.redirect("/rove");
+  res.redirect("/");
 });
 
 app.get("/rove", function (req, res) {
