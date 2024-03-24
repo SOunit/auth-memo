@@ -3,6 +3,7 @@ const cookie = require("cookie-parser");
 const session = require("express-session");
 const path = require("path");
 const { checkLogin } = require("./middleware/check-login");
+const { checkHomeLogin } = require("./middleware/check-home-login");
 
 const app = express();
 
@@ -65,6 +66,18 @@ app.get("/logout", (req, res) => {
 // protect auth route
 app.use(checkLogin);
 
+app.get("/rove", function (req, res) {
+  // check if admin
+
+  // set cookie
+  res.cookie("home-login-success", "false");
+
+  res.render(path.join(__dirname, "views", "pages", "rove"));
+});
+
+// protect home mode
+app.use(checkHomeLogin);
+
 app.get("/switch-to-home", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "switch-to-home"));
 });
@@ -79,10 +92,6 @@ app.post("/switch-to-home", function (req, res) {
   }
 
   res.redirect("/");
-});
-
-app.get("/rove", function (req, res) {
-  res.render(path.join(__dirname, "views", "pages", "rove"));
 });
 
 app.get("/", function (req, res) {
