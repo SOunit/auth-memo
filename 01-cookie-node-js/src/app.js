@@ -3,10 +3,11 @@ const express = require("express");
 const cookie = require("cookie-parser");
 const session = require("express-session");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 
+const constants = require("./constants");
 const { checkLogin } = require("./middleware/check-login");
 const { checkHomeLogin } = require("./middleware/check-home-login");
+const jwtService = require("./services/jwtService");
 
 const app = express();
 
@@ -17,17 +18,6 @@ app.set("view engine", "ejs");
 
 // setup cookie
 app.use(cookie());
-
-app.use((req, res, next) => {
-  const cookies = req.cookies;
-  var messageInCookie = req.cookies["message in cookie"];
-  console.log({ messageInCookie, cookies });
-
-  // cookie sample
-  res.cookie("message in cookie", "hello world!");
-
-  next();
-});
 
 // how express-session work
 // 1. initialize: check req and see if req has uniqueSessionID cookie
@@ -60,26 +50,14 @@ app.post("/login", function (req, res) {
     };
 
     // generate jwt
-    const userAuthInfoJwt = generateRefreshToken(userAuthInfo);
+    const userAuthInfoJwt = jwtService.generateRefreshToken(userAuthInfo);
 
     // set cookie
-    res.cookie("userAuthInfoJwt", userAuthInfoJwt);
+    res.cookie(constants.USER_AUTH_INFO_JWT, userAuthInfoJwt);
   }
 
   res.redirect("/");
 });
-
-function generateAccessToken(data) {
-  return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
-}
-
-function generateRefreshToken(data) {
-  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-
-  console.log({ refreshTokenSecret });
-
-  return jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
-}
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {});
@@ -92,9 +70,21 @@ app.use(checkLogin);
 app.get("/rove", function (req, res) {
   // check if admin
 
-  // set cookie
-  res.cookie("home-login-success", "false");
+  // update jwt
+  var userAuthInfoToken = req.cookies[constants.USER_AUTH_INFO_JWT];
+  var userAuthInfo = jwtService.verify(userAuthInfoToken);
+  if (!userAuthInfo) {
+    // reset token
+  }
 
+  // update permission
+  userAuthInfo.canAccessHome = false;
+  var token = jwtService.generateRefreshToken(userAuthInfo);
+
+  // set cookie
+  res.cookie(constants.USER_AUTH_INFO_JWT, token);
+
+  // render page
   res.render(path.join(__dirname, "views", "pages", "rove"));
 });
 
@@ -107,8 +97,18 @@ app.post("/switch-to-home", function (req, res) {
 
   // Actual implementation would check values in a database
   if (pinCode === "1234") {
+    var token = req.cookies[constants.USER_AUTH_INFO_JWT];
+    var userAuthInfo = jwtService.verify(token);
+    if (!userAuthInfo) {
+      // reset token
+    }
+
+    // update token
+    userAuthInfo.canAccessHome = true;
+    var updatedToken = jwtService.generateRefreshToken(userAuthInfo);
+
     // set cookie
-    res.cookie("home-login-success", "true");
+    res.cookie(constants.USER_AUTH_INFO_JWT, updatedToken);
   }
 
   res.redirect("/");
