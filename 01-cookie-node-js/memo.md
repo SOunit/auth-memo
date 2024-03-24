@@ -9,6 +9,7 @@
     - data have to be in browser
   - have to be secure
     - use jwt to avoid user change login status data
+    - verify jwt for security
 
 # page ejs setup
 
