@@ -64,6 +64,26 @@ app.get("/logout", (req, res) => {
 // protect auth route
 app.use(checkLogin);
 
+app.get("/rove-login", function (req, res) {
+  res.render(path.join(__dirname, "views", "pages", "rove-login"));
+});
+
+app.post("/rove-login", function (req, res) {
+  const { pinCode } = req.body;
+
+  // Actual implementation would check values in a database
+  if (pinCode === "1234") {
+    // set cookie
+    res.cookie("home-login-success", "false");
+  }
+
+  res.redirect("/rove");
+});
+
+app.get("/rove", function (req, res) {
+  res.render(path.join(__dirname, "views", "pages", "rove"));
+});
+
 app.get("/", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "index"));
 });
