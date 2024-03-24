@@ -11,6 +11,25 @@ const jwtService = require("./services/jwtService");
 
 const app = express();
 
+var users = [
+  {
+    id: 1,
+    name: "Admin",
+  },
+  {
+    id: 2,
+    name: "Staff1",
+  },
+  {
+    id: 3,
+    name: "Staff2",
+  },
+  {
+    id: 4,
+    name: "Staff3",
+  },
+];
+
 app.use(express.urlencoded({ extended: true }));
 
 // set view engine
@@ -47,6 +66,7 @@ app.post("/login", function (req, res) {
 
     var userAuthInfo = {
       canAccessHome: true,
+      activeUserId: 1,
     };
 
     // generate jwt
