@@ -6,6 +6,9 @@
   - switch to home need pin code validation
 - switch users
   - In several browsers, same login user, different active users
+    - data have to be in browser
+  - have to be secure
+    - use jwt to avoid user change login status data
 
 # page ejs setup
 
