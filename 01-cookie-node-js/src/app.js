@@ -1,7 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const cookie = require("cookie-parser");
 const session = require("express-session");
 const path = require("path");
+const jwt = require("jsonwebtoken");
+
 const { checkLogin } = require("./middleware/check-login");
 const { checkHomeLogin } = require("./middleware/check-home-login");
 
@@ -34,7 +37,7 @@ app.use((req, res, next) => {
 //
 app.use(
   session({
-    secret: "process.env.SESSION_SECRET_KEY!",
+    secret: process.env.SESSION_SECRET_KEY,
     name: "uniqueSessionID", // name in cookie
     saveUninitialized: false,
   })
@@ -52,14 +55,31 @@ app.post("/login", function (req, res) {
   if (email === "t@t.com" && password === "password") {
     req.session.loggedIn = true;
 
+    var userAuthInfo = {
+      canAccessHome: true,
+    };
+
     // generate jwt
+    const userAuthInfoJwt = generateRefreshToken(userAuthInfo);
 
     // set cookie
-    res.cookie("home-login-success", "true");
+    res.cookie("userAuthInfoJwt", userAuthInfoJwt);
   }
 
   res.redirect("/");
 });
+
+function generateAccessToken(data) {
+  return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
+}
+
+function generateRefreshToken(data) {
+  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+
+  console.log({ refreshTokenSecret });
+
+  return jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
+}
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {});
