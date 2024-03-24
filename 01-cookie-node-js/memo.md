@@ -20,3 +20,8 @@ https://enlyt.co.jp/blog/node-js-2/
 - session id in cookie
 - saved in server memory (or storage could be redis or db)
 - can save multiple values
+
+# jwt
+
+- used for security
+- only server side can validate jwt and fetch data
