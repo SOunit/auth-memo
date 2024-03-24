@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js",
-    "dev": "concurrently \"npm run devStart\" \"npm run devStartAuth\"",
-    "devStart": "nodemon src/app.js",
-    "devStartAuth": "nodemon src/auth.js"
+    "start": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",

@@ -20,6 +20,7 @@ app.use((req, res, next) => {
   var messageInCookie = req.cookies["message in cookie"];
   console.log({ messageInCookie, cookies });
 
+  // cookie sample
   res.cookie("message in cookie", "hello world!");
 
   next();
@@ -50,6 +51,8 @@ app.post("/login", function (req, res) {
   // Actual implementation would check values in a database
   if (email === "t@t.com" && password === "password") {
     req.session.loggedIn = true;
+
+    // generate jwt
 
     // set cookie
     res.cookie("home-login-success", "true");
