@@ -104,9 +104,21 @@ app.get("/rove", function (req, res) {
   // set cookie
   res.cookie(constants.USER_AUTH_INFO_JWT, token);
 
+  var activeUserId = userAuthInfo.activeUserId;
+  var activeUser = getUser(activeUserId);
+
+  var loginUser = getUser(1);
+
   // render page
-  res.render(path.join(__dirname, "views", "pages", "rove"));
+  res.render(path.join(__dirname, "views", "pages", "rove"), {
+    activeUser,
+    loginUser,
+  });
 });
+
+function getUser(id) {
+  return users.find((user) => user.id === id);
+}
 
 app.get("/switch-to-home", function (req, res) {
   res.render(path.join(__dirname, "views", "pages", "switch-to-home"));
@@ -138,7 +150,18 @@ app.post("/switch-to-home", function (req, res) {
 app.use(checkHomeLogin);
 
 app.get("/", function (req, res) {
-  res.render(path.join(__dirname, "views", "pages", "index"));
+  var userAuthInfoJwt = req.cookies[constants.USER_AUTH_INFO_JWT];
+  var userAuthInfo = jwtService.verify(userAuthInfoJwt);
+
+  var activeUserId = userAuthInfo.activeUserId;
+  var activeUser = getUser(activeUserId);
+
+  var loginUser = getUser(1);
+
+  res.render(path.join(__dirname, "views", "pages", "index"), {
+    activeUser,
+    loginUser,
+  });
 });
 
 const port = "8000";
