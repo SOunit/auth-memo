@@ -1,8 +1,11 @@
-# requirement
+# requirements
 
-- login to home
-- switch to rove with no pin code validation
-- switch to home need pin code validation
+- switch mode
+  - login to home
+  - switch to rove with no pin code validation
+  - switch to home need pin code validation
+- switch users
+  - In several browsers, same login user, different active users
 
 # page ejs setup
 
