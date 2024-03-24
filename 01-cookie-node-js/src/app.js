@@ -146,6 +146,20 @@ app.post("/switch-to-home", function (req, res) {
   res.redirect("/");
 });
 
+app.post("/switch-active-user", function (req, res) {
+  var userId = +req.body.userId;
+
+  // update token
+  var token = req.cookies[constants.USER_AUTH_INFO_JWT];
+  var userInfo = jwtService.verify(token);
+  userInfo.activeUserId = userId;
+  var updatedToken = jwtService.generateRefreshToken(userInfo);
+
+  res.cookie(constants.USER_AUTH_INFO_JWT, updatedToken);
+
+  res.redirect("/rove");
+});
+
 // protect home mode
 app.use(checkHomeLogin);
 

@@ -18,14 +18,14 @@
     <main>
       <section>
         <form method="post" action="/switch-active-user">
-          <form for="users">Select Active User</form>
-          <select id="users" name="user">
+          <label for="users">Select Active User</label>
+          <select id="users" name="userId">
             <option value="1">Admin</option>
             <option value="2">Staff 1</option>
             <option value="3">Staff 2</option>
             <option value="4">Staff 3</option>
           </select>
-          <button type="submit">Submit</button>
+          <input type="submit" value="Submit"></input>
         </form>
       </section>
       <section><%- include('../partials/body'); %></section>
